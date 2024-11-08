@@ -64,10 +64,11 @@ public class UserService {
 	// 取得特定使用者
 	public UserDto getUser(String username) {
 		User user = userDao.getUser(username);
+		
 		if(user == null) {
 			return null;
 		}
-		
+
 		// 一個一個將 User 轉成UserDto
 		UserDto userDto = new UserDto();
 		userDto.setUserId(user.getUserId());

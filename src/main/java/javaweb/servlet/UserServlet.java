@@ -63,6 +63,7 @@ public class UserServlet extends HttpServlet {
 			req.setAttribute("userDto", userDto);
 			// "內"重導到 user.jsp (可帶資料)
 			req.getRequestDispatcher("/WEB-INF/view/user_update.jsp").forward(req, resp);
+			return;
 
 		} else if (pathInfo.equals("/update/password")) {
 			req.getRequestDispatcher("/WEB-INF/view/update_password.jsp").forward(req, resp);
@@ -113,7 +114,7 @@ public class UserServlet extends HttpServlet {
 			
 		}
 
-		// "外"重導到指定URLj網頁(不可帶資料，單純重新進入網頁)
+		// "外"重導到指定URL網頁(不可帶資料，單純重新進入網頁)
 		// resp.sendRedirect("http://localhost:8080/javaweb/user"); (因為同伺服器，同下方網址)
 		resp.sendRedirect("/javaweb/user");
 	}

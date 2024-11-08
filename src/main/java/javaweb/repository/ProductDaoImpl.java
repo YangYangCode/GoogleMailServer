@@ -48,7 +48,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 			try (ResultSet rs = pstmt.executeQuery()){
 				if(rs.next()) {
 					Product product = new Product();
-					product.setProductId(rs.getInt("productId"));
+					product.setProductId(rs.getInt("product_id"));
 					product.setProductName(rs.getString("product_name"));
 					product.setPrice(rs.getDouble("price"));
 					product.setStockQuantity(rs.getInt("stock_quantity"));
@@ -63,7 +63,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 
 	@Override
 	public void addProduct(Product product) {
-		String sql = "inser into users(product_name, price, stock_quantity) values(?, ?, ?)";
+		String sql = "insert into product(product_name, price, stock_quantity) values(?, ?, ?)";
 		try(PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setString(1, product.getProductName());
 			pstmt.setDouble(2, product.getPrice());
@@ -81,7 +81,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 
 	@Override
 	public void deleteProduct(Integer productId) {
-		String sql = "delete form product where product_id = ?";
+		String sql = "delete from product where product_id = ?";
 		try(PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setInt(1, productId);
 			

@@ -48,6 +48,7 @@ public class ProductService {
 			product.setProductName(productName);
 			product.setPrice(price);
 			product.setStockQuantity(stockQuantity);
+			System.out.println(product);
 			
 			productDao.addProduct(product);
 		}
@@ -57,8 +58,24 @@ public class ProductService {
 				productDao.updateProductPrice(Integer.parseInt(productId), Double.parseDouble(price));
 			}
 			if(!stockQuantity.isEmpty()) {
-				productDao.updateProductPrice(Integer.parseInt(productId), Double.parseDouble(stockQuantity));
+				productDao.updateProductStockQuantity(Integer.parseInt(productId), Integer.parseInt(stockQuantity));
 			}
+		}
+		
+		public ProductDto getProduct(String productName) {
+			Product product = productDao.getProduct(productName);
+			
+			if(product == null) {
+				return null;
+			}
+			
+			// Product -> ProductDto
+			ProductDto pruductDto = new ProductDto();
+			pruductDto.setProductId(product.getProductId());
+			pruductDto.setProductName(product.getProductName());
+			pruductDto.setPrice(product.getPrice());
+			pruductDto.setStockQuantity(product.getStockQuantity());
+			return pruductDto;
 		}
 		
 		public void deleteProduct(String productId) {

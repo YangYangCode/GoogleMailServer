@@ -23,8 +23,8 @@
 				<fieldset>
 					<legend>商品新增</legend>
 					商品名稱: <input type="text" name="productName" placeholder="請輸入 productName" required><p/>
-					商品價格: <input type="text" name="price" placeholder="請輸入 price" requried><p/>
-					庫存數量: <input type="text" name="stockQuantity" placeholder="請輸入 stockQuantity" requried><p/>
+					商品價格: <input type="text" name="price" placeholder="請輸入 price" required><p/>
+					庫存數量: <input type="text" name="stockQuantity" placeholder="請輸入 stockQuantity" required><p/>
 					<button type="reset" class="button-warning pure-button">Reset</button>
 					<button type="submit" class="button-success pure-button">Submit</button>	  	  
 				</fieldset>
@@ -36,7 +36,7 @@
 					<table class="pure-table pure-table-bordered">
 						<thead>
 							<tr>
-								<th>商品</th><th>商品名稱</th><th>商品單價</th><th>商品庫存</th>
+								<th>商品</th><th>商品名稱</th><th>商品單價</th><th>商品庫存</th><th>修改</th><th>刪除</th>
 							</tr>
 						</thead>
 						<c:forEach var="productDto" items="${ productDtos }">
@@ -49,6 +49,9 @@
 								<td align="right">
 									<f:formatNumber value="${ productDto.stockQuantity }" />
 								</td>
+								
+								<td><a href="/javaweb/product/get?productName=${ productDto.productName }" class="button-secondary pure-button">修改</a></td>
+								<td><a href="/javaweb/product/delete?productId=${ productDto.productId }" class="button-error pure-button">刪除</a></td>
 							</tr>
 						</c:forEach>
 					</table>

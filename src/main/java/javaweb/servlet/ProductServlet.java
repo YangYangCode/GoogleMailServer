@@ -59,36 +59,44 @@ insert into product(product_name, price, stock_quantity) values('Watch', 8000.00
 */ 
 
 
-@WebServlet(value = {"/products", "/product/sales/ranking"})
+@WebServlet(value = {"/product/*", "/products"})
 public class ProductServlet extends HttpServlet{
 	
 	private ProductService productService = new ProductService();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		/*
-		String pathInfo = req.getPathInfo();
-		if (pathInfo == null || pathInfo.equals("/*")) {
-			// 查詢全部
-			List<ProductDto> productDtos = productService.findAllProducts();
-			
-			//將必要屬性加到 request 屬性中，以便交由 jsp 進行分析與呈現
-			req.setAttribute("productDtos", productDtos);
-			// 重導到 user.jsp
-			req.getRequestDispatcher("/WEB-INF/view/product.jsp").forward(req, resp);
-			return;
-		}
-		*/
-		String servletPath = req.getServletPath();
 		
-		switch (servletPath) {
-			case "/product/sales/ranking":
+//		String servletPath = req.getServletPath();
+		String pathInfo = req.getPathInfo()+"";
+//		System.out.println(servletPath);
+//		System.out.println(pathInfo);
+		
+//		switch (servletPath) {
+		switch (pathInfo) {
+			case "/sales/ranking":
 				req.setAttribute("salesRankingMap", productService.querySalesRanking());
 				req.getRequestDispatcher("/WEB-INF/view/sales_ranking.jsp").forward(req, resp);
 				break;
 				
 			case "/products":
+				// 查詢全部
+				List<ProductDto> productDtos = productService.findAllProducts();
 				
+				//將必要屬性加到 request 屬性中，以便交由 jsp 進行分析與呈現
+				req.setAttribute("productDtos", productDtos);
+				// 重導到 products.jsp
+				req.getRequestDispatcher("/WEB-INF/view/products.jsp").forward(req, resp);
+				return;
+				
+			case "/get":
+				String productName = req.getParameter("productName");
+				ProductDto productDto = productService.getProduct(productName);
+				// 將必要資料加入到 request 屬性中，以便交由 jsp 進行分析與呈現
+				req.setAttribute("productDto", productDto);
+				// "內"重導到 product.jsp (可帶資料)
+				req.getRequestDispatcher("/WEB-INF/view/product_update.jsp").forward(req, resp);
+				return;
 			
 			case "/delete":
 				String productId = req.getParameter("productId");
@@ -100,7 +108,7 @@ public class ProductServlet extends HttpServlet{
 				
 			default:
 				req.setAttribute("productDtos", productService.findAllProducts());
-				req.getRequestDispatcher("/WEB-INF/view/product.jsp").forward(req, resp);
+				req.getRequestDispatcher("/WEB-INF/view/products.jsp").forward(req, resp);
 		}
 	}
 	
@@ -121,12 +129,12 @@ public class ProductServlet extends HttpServlet{
 		case "/update":
 			productService.updateProduct(productId, price, stockQuantity);
 			break;
-			
-		case "/delete":
-			break;
-			
 		
 		}
+		
+		// "外"重導到指定URL網頁(不可帶資料，單純重新進入網頁)
+		// resp.sendRedirect("http://localhost:8080/javaweb/products"); (因為同伺服器，同下方網址)
+		resp.sendRedirect("/javaweb/products");
 	}
 }
 
